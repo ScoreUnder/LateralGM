@@ -25,8 +25,6 @@ package org.lateralgm.main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -52,7 +50,6 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.DropMode;
-import javax.swing.GroupLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
@@ -67,13 +64,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -84,7 +78,6 @@ import org.lateralgm.components.impl.CustomFileFilter;
 import org.lateralgm.components.impl.FramePrefsHandler;
 import org.lateralgm.components.impl.GmTreeEditor;
 import org.lateralgm.components.impl.ResNode;
-import org.lateralgm.components.mdi.MDIManager;
 import org.lateralgm.components.mdi.MDIPane;
 import org.lateralgm.file.GmFile;
 import org.lateralgm.file.GmFile.ResourceHolder;
@@ -108,12 +101,12 @@ public final class LGM
 	public static String iconspack = "Calico";
 	public static String themename = "Swing";
 	public static boolean themechanged = false;
-	
+
 	public static int javaVersion;
 	public static File tempDir, workDir;
 	static
 		{
-		
+
 		//Get Java Version
 		String jv = System.getProperty("java.version"); //$NON-NLS-1$
 		Scanner s = new Scanner(jv).useDelimiter("[\\._-]"); //$NON-NLS-1$
@@ -144,154 +137,171 @@ public final class LGM
 	public static EventPanel eventSelect;
 	public static AbstractButton eventButton;
 	public static PreferencesFrame prefFrame;
-	
-  public static void SetLookAndFeel(String LOOKANDFEEL) 
-  {
- // MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-    if (LOOKANDFEEL.equals(themename))
-    {
-      themechanged = false;
-    	return;
-    }
-    themechanged = true;
-    themename = LOOKANDFEEL;
-    String lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-  
-    if (LOOKANDFEEL != null) {
-      if (LOOKANDFEEL.equals("Swing")) {
-          lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-        //  an alternative way to set the Metal L&F is to replace the 
-        // previous line with:
-        // lookAndFeel = "javax.swing.plaf.metal.MetalLookAndFeel";
-      }
-      else if (LOOKANDFEEL.equals("Native")) {
-          lookAndFeel = UIManager.getSystemLookAndFeelClassName();
-      } 
-      else if (LOOKANDFEEL.equals("Nimbus")) {
-          lookAndFeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
-      } 
-      else if (LOOKANDFEEL.equals("Windows")) {
-          lookAndFeel = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-      } 
-      else if (LOOKANDFEEL.equals("Motif")) {
-          lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-      } 
-      else if (LOOKANDFEEL.equals("GTK")) { 
-          lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-      } 
-      else if (LOOKANDFEEL.equals("Custom")) { 
-          lookAndFeel = Prefs.swingThemePath;
-      } 
-      else {
-          System.err.println("Unexpected value of LOOKANDFEEL specified: "
-                             + LOOKANDFEEL);
-          lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-      }
 
-      try {
-          UIManager.setLookAndFeel(lookAndFeel);
-      } 
-      catch (ClassNotFoundException e) {
-          System.err.println("Couldn't find class for specified look and feel:"
-                             + lookAndFeel);
-          System.err.println("Did you include the L&F library in the class path?");
-          System.err.println("Using the default look and feel.");
-      } 
-      
-      catch (UnsupportedLookAndFeelException e) {
-          System.err.println("Can't use the specified look and feel ("
-                             + lookAndFeel
-                             + ") on this platform.");
-          System.err.println("Using the default look and feel.");
-      } 
-      
-      catch (Exception e) {
-          System.err.println("Couldn't get specified look and feel ("
-                             + lookAndFeel
-                             + "), for some reason.");
-          System.err.println("Using the default look and feel.");
-          e.printStackTrace();
-      }
-  }
-}
-	
-  // this function is for updating the look and feel after its
-  // already been initialized and all controls created
-  public static void UpdateLookAndFeel() {
-    if (!themechanged)
-    {
-    	return;
-    } 
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    SwingUtilities.updateComponentTreeUI(frame);
-    //SwingUtilities.updateComponentTreeUI(mdi);
-    //frame.pack();
-    Window windows[] = frame.getWindows();
-    for(Window window : windows) {
-        SwingUtilities.updateComponentTreeUI(window);
-    }
-  }
-  
+	public static void SetLookAndFeel(String LOOKANDFEEL)
+		{
+		// MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+		if (LOOKANDFEEL.equals(themename))
+			{
+			themechanged = false;
+			return;
+			}
+		themechanged = true;
+		themename = LOOKANDFEEL;
+		String lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+
+		if (LOOKANDFEEL != null)
+			{
+			if (LOOKANDFEEL.equals("Swing"))
+				{
+				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+				//  an alternative way to set the Metal L&F is to replace the 
+				// previous line with:
+				// lookAndFeel = "javax.swing.plaf.metal.MetalLookAndFeel";
+				}
+			else if (LOOKANDFEEL.equals("Native"))
+				{
+				lookAndFeel = UIManager.getSystemLookAndFeelClassName();
+				}
+			else if (LOOKANDFEEL.equals("Nimbus"))
+				{
+				lookAndFeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
+				}
+			else if (LOOKANDFEEL.equals("Windows"))
+				{
+				lookAndFeel = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+				}
+			else if (LOOKANDFEEL.equals("Motif"))
+				{
+				lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+				}
+			else if (LOOKANDFEEL.equals("GTK"))
+				{
+				lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+				}
+			else if (LOOKANDFEEL.equals("Custom"))
+				{
+				lookAndFeel = Prefs.swingThemePath;
+				}
+			else
+				{
+				System.err.println("Unexpected value of LOOKANDFEEL specified: " + LOOKANDFEEL);
+				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+				}
+
+			try
+				{
+				UIManager.setLookAndFeel(lookAndFeel);
+				}
+			catch (ClassNotFoundException e)
+				{
+				System.err.println("Couldn't find class for specified look and feel:" + lookAndFeel);
+				System.err.println("Did you include the L&F library in the class path?");
+				System.err.println("Using the default look and feel.");
+				}
+
+			catch (UnsupportedLookAndFeelException e)
+				{
+				System.err.println("Can't use the specified look and feel (" + lookAndFeel
+						+ ") on this platform.");
+				System.err.println("Using the default look and feel.");
+				}
+
+			catch (Exception e)
+				{
+				System.err.println("Couldn't get specified look and feel (" + lookAndFeel
+						+ "), for some reason.");
+				System.err.println("Using the default look and feel.");
+				e.printStackTrace();
+				}
+			}
+		}
+
+	// this function is for updating the look and feel after its
+	// already been initialized and all controls created
+	public static void UpdateLookAndFeel()
+		{
+		if (!themechanged)
+			{
+			return;
+			}
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		SwingUtilities.updateComponentTreeUI(frame);
+		//SwingUtilities.updateComponentTreeUI(mdi);
+		//frame.pack();
+		Window windows[] = frame.getWindows();
+		for (Window window : windows)
+			{
+			SwingUtilities.updateComponentTreeUI(window);
+			}
+		}
+
 	public static GameInformationFrame getGameInfo()
-	{
+		{
 		try
-		{
+			{
 			gameInformationFrameBuilder.join();
-		}
+			}
 		catch (InterruptedException e)
-		{
+			{
 			//We tried...
-		}
+			}
 		return gameInfo;
-	}
+		}
 
 	public static GameSettingFrame getGameSettings()
-	{
-		try
 		{
+		try
+			{
 			gameSettingFrameBuilder.join();
-		}
+			}
 		catch (InterruptedException e)
 			{
 			//We tried...
 			}
 		return gameSet;
-	}
-	
+		}
+
 	public static ExtensionsFrame getGameExtensions()
-	{
+		{
 		try
 			{
-			  extensionsFrameBuilder.join();
+			extensionsFrameBuilder.join();
 			}
 		catch (InterruptedException e)
 			{
 			//We tried...
 			}
 		return extSet;
-	}
+		}
 
 	private LGM()
-	{
-	
-	}
+		{
+
+		}
 
 	public static ImageIcon findIcon(String filename)
 		{
 		String fixedpath = iconspath + iconspack + "/" + filename;
-	  String custompath = Prefs.iconPath + filename;
+		String custompath = Prefs.iconPath + filename;
 		String location = ""; //$NON-NLS-1$
 		File f = new File(custompath);
-		if (Prefs.iconPack == "Custom") { 
-		  location = custompath;
-		} else {
-		  if (f.exists()) {
-		    location = custompath;
-		  } else {
-		    location = fixedpath;
-		  }
-		}
-		
+		if (Prefs.iconPack == "Custom")
+			{
+			location = custompath;
+			}
+		else
+			{
+			if (f.exists())
+				{
+				location = custompath;
+				}
+			else
+				{
+				location = fixedpath;
+				}
+			}
+
 		ImageIcon ico = new ImageIcon(location);
 		if (ico.getIconWidth() == -1)
 			{
@@ -412,7 +422,7 @@ public final class LGM
 		JScrollPane scroll = new JScrollPane(tree);
 		scroll.setPreferredSize(new Dimension(250,100));
 		scroll.setAlignmentX(JScrollPane.RIGHT_ALIGNMENT);
-		
+
 		return scroll;
 		}
 
@@ -544,10 +554,10 @@ public final class LGM
 		}
 
 	protected static void fireReloadPerformed(boolean newRoot)
-	{
+		{
 		for (ReloadListener rl : reloadListeners)
 			rl.reloadPerformed(newRoot);
-	}
+		}
 
 	public static void addPluginResource(PluginResource pr)
 		{
@@ -602,7 +612,7 @@ public final class LGM
 		}
 
 	public static void main(String[] args)
-  {
+		{
 		//java6u10 regression causes graphical xor to be very slow
 		System.setProperty("sun.java2d.d3d","false"); //$NON-NLS-1$ //$NON-NLS-2$
 		//Put the Mac menu bar where it belongs (ignored by other systems)
@@ -629,79 +639,73 @@ public final class LGM
 				tempDir.setWritable(true,false);
 				}
 			}
-		
+
 		splashProgress.progress(20,Messages.getString("LGM.SPLASH_LIBS")); //$NON-NLS-1$
 		LibManager.autoLoad();
-		
+
 		iconspack = Prefs.iconPack;
 		SetLookAndFeel(Prefs.swingTheme);
 		//annoyingly, Metal bolds almost all components by default. This unbolds them.
 		UIManager.put("swing.boldMetal",Boolean.FALSE); //$NON-NLS-1$
 		themechanged = false;
-		
+
 		splashProgress.progress(30,Messages.getString("LGM.SPLASH_TOOLS")); //$NON-NLS-1$
 		JComponent toolbar = createToolBar();
 		JComponent tree = createTree();
 		content = new JPanel(new BorderLayout());
 		content.add(BorderLayout.CENTER,createMDI());
 		content.add(BorderLayout.EAST,eventSelect = new EventPanel());
-		
+
 		splashProgress.progress(40,Messages.getString("LGM.SPLASH_THREAD")); //$NON-NLS-1$
-		
-		gameInfo = new GameInformationFrame(currentFile.gameInfo);
-		mdi.add(gameInfo);
-		gameSet = new GameSettingFrame(currentFile.gameSettings,currentFile.constants,
-				currentFile.includes);
-		mdi.add(gameSet);
-		extSet = new ExtensionsFrame(new Extensions());
-		mdi.add(extSet);
-		
-		
-		// I've deprecated this code because it causes a hanging loop
-		// do not remove these empty loops, just leave them be 
+
+		// FIXME: This causes exceptions and potential hanging on non-swing themes
 		gameInformationFrameBuilder = new Thread()
-		{
+			{
 				public void run()
-				{
-
-				}
-		};
-		gameSettingFrameBuilder = new Thread()
-		{
-				public void run()
-				{
-
-				}
-		};
-		extensionsFrameBuilder = new Thread()
-		{
-					public void run()
 					{
-
+					gameInfo = new GameInformationFrame(currentFile.gameInfo);
+					mdi.add(gameInfo);
 					}
-		};
-		
-		// This code causes a hanging loop and you have to force shutdown
-		// I advise you not to mess with it
-		//gameInformationFrameBuilder.start(); //must occur after createMDI
-		//gameSettingFrameBuilder.start(); //must occur after createMDI
-		//extensionsFrameBuilder.start(); //must occur after createMDI
-		
+			};
+		gameSettingFrameBuilder = new Thread()
+			{
+				public void run()
+					{
+					gameSet = new GameSettingFrame(currentFile.gameSettings,currentFile.constants,
+							currentFile.includes);
+					mdi.add(gameSet);
+					}
+			};
+		extensionsFrameBuilder = new Thread()
+			{
+				public void run()
+					{
+					extSet = new ExtensionsFrame(new Extensions());
+					mdi.add(extSet);
+					}
+			};
+
+		gameInformationFrameBuilder.start(); //must occur after createMDI
+		gameSettingFrameBuilder.start(); //must occur after createMDI
+		extensionsFrameBuilder.start(); //must occur after createMDI
+
 		splashProgress.progress(50,Messages.getString("LGM.SPLASH_MENU")); //$NON-NLS-1$
 		frame = new JFrame(Messages.format("LGM.TITLE", //$NON-NLS-1$
 				Messages.getString("LGM.NEWGAME"))); //$NON-NLS-1$
-	
+
 		frame.setJMenuBar(new GmMenuBar());
 		splashProgress.progress(60,Messages.getString("LGM.SPLASH_UI")); //$NON-NLS-1$
 		JPanel f = new JPanel(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
-    frame.addWindowListener(new java.awt.event.WindowAdapter() {
-    public void windowClosing(WindowEvent winEvt) {
-      LGM.onMainFrameClosed();
-    }
-  });
-    
+
+		frame.addWindowListener(new java.awt.event.WindowAdapter()
+			{
+				public void windowClosing(WindowEvent winEvt)
+					{
+					LGM.onMainFrameClosed();
+					}
+			});
+
 		//p.add(tree, BorderLayout.WEST);
 		//.add(new JButton("fuck you"));
 		//content.add(BorderLayout.WEST, p);
@@ -709,7 +713,7 @@ public final class LGM
 		split.setDividerLocation(250);
 		split.setOneTouchExpandable(true);
 		f.add(split);
-		
+
 		frame.setContentPane(f);
 		frame.setTransferHandler(Listener.getInstance().fc.new LGMDropHandler());
 		//f.add(BorderLayout.CENTER,content);
@@ -746,36 +750,33 @@ public final class LGM
 		splashProgress.complete();
 		frame.setVisible(true);
 		frame.pack();
-	}
-	
-	public static void askToSaveProject()
-	{
-	  FileChooser fc = new FileChooser();
-	  fc.save(LGM.currentFile.uri,LGM.currentFile.format);
-	}
-	
-	public static void onMainFrameClosed()
-  {
-		  int n = JOptionPane.showConfirmDialog(null,
-		    Messages.getString("LGM.KEEPCHANGES_MESSAGE"),
-		    Messages.getString("LGM.KEEPCHANGES_TITLE"),
-        JOptionPane.YES_NO_CANCEL_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null);
+		}
 
-		  switch (n)
-		  {
-			  case JOptionPane.YES_OPTION:
-			    askToSaveProject();
-    		  System.exit(0);
-    		  break;
-			  case JOptionPane.NO_OPTION:
-    		  System.exit(0);
-    		  break;
-			  case JOptionPane.CANCEL_OPTION:
-    		  // do nothing
-    		  break;
-		  }
+	public static void askToSaveProject()
+		{
+		FileChooser fc = new FileChooser();
+		fc.save(LGM.currentFile.uri,LGM.currentFile.format);
+		}
+
+	public static void onMainFrameClosed()
+		{
+		int n = JOptionPane.showConfirmDialog(null,Messages.getString("LGM.KEEPCHANGES_MESSAGE"),
+				Messages.getString("LGM.KEEPCHANGES_TITLE"),JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE,null);
+
+		switch (n)
+			{
+			case JOptionPane.YES_OPTION:
+				askToSaveProject();
+				System.exit(0);
+				break;
+			case JOptionPane.NO_OPTION:
+				System.exit(0);
+				break;
+			case JOptionPane.CANCEL_OPTION:
+				// do nothing
+				break;
+			}
 		}
 
 	static final class SplashProgress
@@ -878,12 +879,13 @@ public final class LGM
 			splash.update();
 			}
 		}
-	
+
 	public static void ShowPreferences()
-	{
-		if (prefFrame == null) {
-		  prefFrame = new PreferencesFrame();
-		}
+		{
+		if (prefFrame == null)
+			{
+			prefFrame = new PreferencesFrame();
+			}
 		prefFrame.show();
+		}
 	}
-}
