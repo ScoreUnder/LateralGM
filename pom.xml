@@ -13,7 +13,7 @@
     <dependency>
       <groupId>org.lateralgm</groupId>
       <artifactId>JoshEdit</artifactId>
-      <version>1</version>
+      <version>1.0.1</version>
     </dependency>
   </dependencies>
 
