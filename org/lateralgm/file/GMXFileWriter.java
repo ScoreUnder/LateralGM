@@ -1742,15 +1742,9 @@ public final class GMXFileWriter
 		rtfNode.setTextContent("help.rtf"); //$NON-NLS-1$
 		helpNode.appendChild(rtfNode);
 
-		PrintWriter out = null;
-		try
+		try (PrintWriter out = new PrintWriter(Util.getPOSIXPath(f.getDirectory() + "/help.rtf"))) //$NON-NLS-1$
 			{
-			out = new PrintWriter(Util.getPOSIXPath(f.getDirectory() + "/help.rtf")); //$NON-NLS-1$
-			out.println(f.gameInfo.properties.get(PGameInformation.TEXT));
-			}
-		finally
-			{
-			out.close();
+			out.println(f.gameInfo.properties.<String>get(PGameInformation.TEXT));
 			}
 
 		root.appendChild(helpNode);

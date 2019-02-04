@@ -1,5 +1,5 @@
 JC = javac
-JFLAGS = -source 1.7 -target 1.7 -cp .:modules/joshedit
+JFLAGS = -source 1.8 -target 1.8 -cp .:modules/joshedit
 OUTPUT_FILE = lateralgm.jar
 
 %.class: %.java
