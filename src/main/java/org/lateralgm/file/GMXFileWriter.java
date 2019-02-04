@@ -105,11 +105,10 @@ import org.lateralgm.resources.sub.Tile;
 import org.lateralgm.resources.sub.Tile.PTile;
 import org.lateralgm.resources.sub.View;
 import org.lateralgm.resources.sub.View.PView;
+import org.lateralgm.util.HexBin;
 import org.lateralgm.util.PropertyMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 
 public final class GMXFileWriter
 	{
@@ -1746,7 +1745,7 @@ public final class GMXFileWriter
 		try
 			{
 			out = new PrintWriter(Util.getPOSIXPath(f.getDirectory() + "/help.rtf")); //$NON-NLS-1$
-			out.println(f.gameInfo.properties.get(PGameInformation.TEXT));
+			out.println(f.gameInfo.properties.<String>get(PGameInformation.TEXT));
 			}
 		finally
 			{

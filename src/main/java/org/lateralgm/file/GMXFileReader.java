@@ -102,14 +102,13 @@ import org.lateralgm.resources.sub.Tile;
 import org.lateralgm.resources.sub.Tile.PTile;
 import org.lateralgm.resources.sub.View;
 import org.lateralgm.resources.sub.View.PView;
+import org.lateralgm.util.HexBin;
 import org.lateralgm.util.PropertyMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 
 // TODO: Possibly rewrite from a DOM parser to a SAX parser,
 // because SAX is light weight faster and uses less memory,
